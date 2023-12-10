@@ -23,4 +23,8 @@ func main() {
 	var done bool
 
 	fmt.Println(value, price, done)
+
+	var amount int
+
+	fmt.Println(amount == 0.0)
 }
