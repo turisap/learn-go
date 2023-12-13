@@ -9,6 +9,7 @@ func main() {
 	freinds := [2]string{"mark", "ann"}
 	outer := 21
 
+	// @COOL
 outer:
 	for _, name := range people {
 		for idx, fr := range freinds {
