@@ -15,7 +15,8 @@ func main() {
 	//writingToFile()
 	//writeBufIO()
 	//readFile()
-	readByLine()
+	//readByLine()
+	readStdio()
 }
 
 func basicOperations() {
@@ -246,6 +247,8 @@ func readByLine() {
 		log.Fatal(err)
 	}
 
+	defer f.Close()
+
 	// read line-byline
 	scanner := bufio.NewScanner(f)
 
@@ -269,5 +272,29 @@ func readByLine() {
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
+	}
+}
+
+func readStdio() {
+	scanner := bufio.NewScanner(os.Stdin)
+
+	for scanner.Scan() {
+
+		text := scanner.Text()
+		bytes := scanner.Bytes()
+
+		fmt.Println("Text:", text)
+		fmt.Println("Bytes:", bytes)
+
+		if text == "exit" {
+			fmt.Println("Exiting scanning")
+			break
+		}
+	}
+
+	fmt.Println("By...")
+
+	if err := scanner.Err(); err != nil {
+		log.Println(err)
 	}
 }
