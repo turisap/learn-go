@@ -79,4 +79,16 @@ func main() {
 	//		log.Fatal("Could not delete", err)
 	//	}
 	//}
+	cwd()
+}
+
+func cwd() {
+	currentDir, err := os.Getwd()
+
+	if err != nil {
+		log.Fatal("Error getting the path", err)
+	}
+
+	fmt.Println(currentDir)
+
 }
