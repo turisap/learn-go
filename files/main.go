@@ -8,6 +8,14 @@ import (
 
 // @TODO you will also need to try io and io-utils packages
 func main() {
+	//basicOperations()
+	//cwd()
+	//writingToFile()
+	writeBufIO()
+}
+
+func basicOperations() {
+
 	//var newFile *os.File
 	//fmt.Printf("%T\n", newFile)
 
@@ -79,7 +87,6 @@ func main() {
 	//		log.Fatal("Could not delete", err)
 	//	}
 	//}
-	cwd()
 }
 
 func cwd() {
@@ -90,5 +97,55 @@ func cwd() {
 	}
 
 	fmt.Println(currentDir)
+
+}
+
+func writingToFile() {
+	path, err := os.Getwd()
+
+	if err != nil {
+		fmt.Println("Error getting path")
+		log.Fatal(err)
+	}
+
+	name := path + "/_writable.txt"
+	f, err := os.OpenFile(name, os.O_CREATE|os.O_TRUNC|os.O_APPEND|os.O_WRONLY, 0644)
+
+	if err != nil {
+		fmt.Println("Error opening file")
+		log.Fatal(err)
+	}
+
+	// idiomatic way to close a file
+	// defers closing until the
+	// surrounding func returns
+	defer f.Close()
+
+	// convert a string to bytes
+	bytesSlice := []byte("I love golang")
+
+	bytesWritten, err := f.Write(bytesSlice)
+
+	if err != nil {
+		fmt.Println("Error writing to file")
+		log.Fatal(err)
+	}
+
+	fmt.Println("Bytes written", bytesWritten)
+
+	bytesSlice = []byte("Go programming is cool")
+
+	err = os.WriteFile(path+"/_ol.txt", bytesSlice, 0644)
+
+	if err != nil {
+		fmt.Println("Error writing the file")
+		log.Fatal(err)
+	} else {
+		fmt.Println("File written")
+	}
+
+}
+
+func writeBufIO() {
 
 }
