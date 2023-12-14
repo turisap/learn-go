@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"os"
 )
@@ -11,7 +13,9 @@ func main() {
 	//basicOperations()
 	//cwd()
 	//writingToFile()
-	writeBufIO()
+	//writeBufIO()
+	//readFile()
+	readByLine()
 }
 
 func basicOperations() {
@@ -147,5 +151,123 @@ func writingToFile() {
 }
 
 func writeBufIO() {
+	path, err := os.Getwd()
 
+	if err != nil {
+		fmt.Println("Error getting path")
+		log.Fatal(err)
+	}
+
+	name := path + "/_bufio.txt"
+	f, err := os.OpenFile(name, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+
+	if err != nil {
+		fmt.Println("Error opening file")
+		log.Fatal(err)
+	}
+
+	defer f.Close()
+
+	bufferedWriter := bufio.NewWriter(f)
+
+	bs := []byte{10, 133, 212, 33}
+
+	bytesWritten, err := bufferedWriter.Write(bs)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Bytes written", bytesWritten)
+	fmt.Println("Bytes available", bufferedWriter.Available())
+
+	bytesWritten, err = bufferedWriter.Write([]byte("\n Just a random stringg"))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("Buffered bytes %d\n", bufferedWriter.Buffered())
+
+	// @COOL you can write to file after you finished all operations on buffer
+	bufferedWriter.Flush()
+}
+
+func readFile() {
+	currWD, err := os.Getwd()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	path := currWD + "/main.go"
+
+	file, err := os.OpenFile(path, os.O_RDONLY, 0644)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer file.Close()
+
+	bs, err := io.ReadAll(file)
+
+	if err != nil {
+		fmt.Println("here")
+		log.Fatal(err)
+	}
+
+	// convert a bite slice into a unicode string
+	fmt.Println("Bytes slice", string(bs))
+	fmt.Println("Bytes read", len(bs))
+
+	// another way to read a file
+	data, err := os.ReadFile(path)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("%s", data)
+}
+
+func readByLine() {
+	wd, err := os.Getwd()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	path := wd + "/main.go"
+
+	f, err := os.OpenFile(path, os.O_RDONLY, 0644)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// read line-byline
+	scanner := bufio.NewScanner(f)
+
+	ok := scanner.Scan()
+
+	if !ok {
+		err := scanner.Err()
+
+		if err != nil {
+			log.Fatal(err)
+		} else {
+			fmt.Println("EOF reached")
+		}
+	}
+
+	fmt.Println("First line found", scanner.Text())
+
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
 }
