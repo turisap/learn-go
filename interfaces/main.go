@@ -34,6 +34,34 @@ type shape interface {
 	area() float64
 }
 
+type object interface {
+	volume() float64
+}
+
+type color [3]int8
+
+type geometry interface {
+	shape
+	object
+	getColor() color
+}
+
+type cube struct {
+	edge float64
+}
+
+func (c cube) area() float64 {
+	return c.edge * 2 * 8
+}
+
+func (c cube) volume() float64 {
+	return c.edge * 3
+}
+
+func (c cube) getColor() color {
+	return color{int8(3), int8(15), int8(88)}
+}
+
 func main() {
 	var s shape
 	// prints out nil
@@ -53,6 +81,9 @@ func main() {
 
 	fmt.Println("\n" + strings.Repeat("@", 20))
 	assertions()
+
+	fmt.Println("\n" + strings.Repeat("@", 20))
+	embeddedTypes()
 }
 
 /* TYPE ASSERTIONS */
@@ -74,4 +105,17 @@ func assertions() {
 	case rectangle:
 		fmt.Println("shape is a rectangle")
 	}
+}
+
+func measure(s geometry) {
+	fmt.Printf("Volume is %d", s.volume())
+}
+
+func embeddedTypes() {
+	var kube geometry = cube{edge: 3.0}
+	kube.area()
+	kube.volume()
+	kube.getColor()
+
+	measure(kube)
 }
