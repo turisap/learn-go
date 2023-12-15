@@ -201,7 +201,7 @@ func readFile() {
 		log.Fatal(err)
 	}
 
-	path := currWD + "/main.go"
+	path := currWD + "/basics.go"
 
 	file, err := os.OpenFile(path, os.O_RDONLY, 0644)
 
@@ -239,7 +239,7 @@ func readByLine() {
 		log.Fatal(err)
 	}
 
-	path := wd + "/main.go"
+	path := wd + "/basics.go"
 
 	f, err := os.OpenFile(path, os.O_RDONLY, 0644)
 
