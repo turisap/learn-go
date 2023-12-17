@@ -12,6 +12,7 @@ func main() {
 		fmt.Println("Before pushing to the channel") // 2
 		// routine execution block here until someone
 		// gets data from the chanel
+		time.Sleep(time.Second * 5)
 		c <- 10
 		fmt.Println("After pushing to the channel") // 5
 	}(ch1)
